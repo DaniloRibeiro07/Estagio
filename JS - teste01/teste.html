@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="button" name="Porta Selecionada" value="Selecionar Porta Serial" onclick="Selecionar()"/>
+    <br><br>
+    <input type="button" name="conectar" value="conectar" onclick="Conectar()"/>
+    <br><br>
+    <script>
+        var port = 0
+        async function Selecionar(){
+            port = await navigator.serial.requestPort()
+        }
+        async function Conectar(){
+            alert(port)
+            await port.open({ baudRate: 115200 });
+        }
+    </script>
+</body>
+</html>
