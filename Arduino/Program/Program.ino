@@ -14,7 +14,7 @@ void loop() {
     tempo_ref=millis();
   }
   if (Serial.available()>0){
-    Serial.print(Serial.readString());
+    Serial.print("Recebi: " + Serial.readString());
     static bool estado=1;
     digitalWrite(2, estado);
     estado=!estado;

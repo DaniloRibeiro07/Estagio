@@ -5,20 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comunicação Serial</title>
+    <link rel = "icon" href =".\data\InovectorLogo2.png" type = "image/x-icon">
     <link rel='stylesheet' href='.\CSS\style.css'>
-    <script src='.\JS\script.js'></script>
+    <script src='.\JS\serial.js'></script>
+    <script src='.\JS\interacao.js'></script>
 </head>
 <body>
-    <h1>testando</h1>
+    <p>Clique no botão abaixo para selecionar uma porta serial:</p>
     <input type="button" name="Porta Selecionada" value="Selecionar Porta Serial" onclick="SelectCOM()"/>
-    <br><br>
-    <input type="button" name="conectar" value="conectar" onclick="ConectCOM()"/>
-    <br><br>
-    <input type="button" id="desco" name="desconectar" value="desconectar" onclick="desco=1"/>
-    <br><br>
-    <input type="button" name="enviar" value="enviar" onclick="writeCOM(document.getElementById('text-box').value)"/>
-    <br><br>
+    <p id="text-disp-select">Dispositivo selecionado:</p>
+    
+    <p>Clique no botão abaixo para conectar com o dispositivo.</p>
+    <input type="button" name="conectar" value="Conectar" onclick="ConectCOM()"/>
+    <p id="text-status">Status: Desconectado</p>
+    
+    <textarea readonly id="text-area"></textarea>
+    <br>  
     <input id="text-box"/>
-    <textarea name="text-area" readonly id="text-area" cols="30" rows="10"></textarea>
+    <input type="button" name="enviar" value="Enviar" onclick="writeCOM(document.getElementById('text-box').value)"/>
+    <br><br>
+    <p>Clique no botão abaixo para se desconectar do dispositivo.</p>
+    <input type="button" id="desco" name="Desconectar" value="Desconectar" onclick="desco=1"/>
+    <footer>
+        <a id ="texto-rodape">Power By:</a> 
+        <a href="https://www.instagram.com/inovector3d/" target="_blank" rel="noopener noreferrer">
+            <img id="logo-inovector" src="./data/InovectorLogo1.png" height="90%" >
+        </a>
+    </footer>
 </body>
 </html>
