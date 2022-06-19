@@ -4,22 +4,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Comunicação Serial</title>
+    <link rel='stylesheet' href='.\CSS\style.css'>
+    <script src='.\JS\script.js'></script>
 </head>
 <body>
-    <input type="button" name="Porta Selecionada" value="Selecionar Porta Serial" onclick="Selecionar()"/>
+    <h1>testando</h1>
+    <input type="button" name="Porta Selecionada" value="Selecionar Porta Serial" onclick="SelectCOM()"/>
     <br><br>
-    <input type="button" name="conectar" value="conectar" onclick="Conectar()"/>
+    <input type="button" name="conectar" value="conectar" onclick="ConectCOM()"/>
     <br><br>
-    <script>
-        var port = 0
-        async function Selecionar(){
-            port = await navigator.serial.requestPort()
-        }
-        async function Conectar(){
-            alert(port)
-            await port.open({ baudRate: 115200 });
-        }
-    </script>
+    <input type="button" id="desco" name="desconectar" value="desconectar" onclick="desco=1"/>
+    <br><br>
+    <input type="button" name="enviar" value="enviar" onclick="writeCOM(document.getElementById('text-box').value)"/>
+    <br><br>
+    <input id="text-box"/>
+    <textarea name="text-area" readonly id="text-area" cols="30" rows="10"></textarea>
 </body>
 </html>
