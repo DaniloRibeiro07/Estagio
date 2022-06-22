@@ -1,9 +1,7 @@
-        var port = 0
-        var desco= 0
-
         async function SelectCOM(){
             try{
-                port = await navigator.serial.requestPort()
+                SelectCOM.port = await navigator.serial.requestPort()
+                desconectCOM.valor=0
                 InformacoesDisp()
             }catch (error){
 
@@ -13,15 +11,14 @@
         async function InformacoesDisp(){
             fetch("./data/usb.ids.txt")
             .then((response) => {
-                console.log(response)
                 return response.text();
             })
             .then((text) => {
                 let fabricante="Dispositivo Serial"
                 let produto=fabricante
                 try {
-                    const vendorID=port.getInfo().usbVendorId.toString(16)
-                    const productID=port.getInfo().usbProductId.toString(16)
+                    const vendorID=SelectCOM.port.getInfo().usbVendorId.toString(16)
+                    const productID=SelectCOM.port.getInfo().usbProductId.toString(16)
                     const inicio_vendor=text.indexOf("\n"+vendorID)+("\n"+vendorID).length+2
                     if (inicio_vendor!=-1){
                         const fim_vendor=text.indexOf('\n',inicio_vendor)
@@ -46,7 +43,7 @@
         async function ConectCOM(){
             var texto = document.getElementById("text-status")
             try{
-                await port.open({baudRate:(115200),bufferSize:(255),dataBits:(8),flowControl:("none"),parity:("none"),stopBits:(1)})
+                await SelectCOM.port.open({baudRate:(115200),bufferSize:(255),dataBits:(8),flowControl:("none"),parity:("none"),stopBits:(1)})
                 texto.innerHTML = "Status: Conectado"
                 readCOM();
             }catch (erro){
@@ -55,16 +52,27 @@
         }
 
         async function readCOM(){
-            while (port.readable) {
-                const reader = port.readable.getReader();
+            readCOM.texto=""
+            while (SelectCOM.port.readable) {
+                const reader = SelectCOM.port.readable.getReader();
                 try {
                     while (true) {
                         const { value, done } = await reader.read()
-                        var texto=new TextDecoder().decode(value)
-                        var caixa =document.getElementById('text-area')
+                        var caractere=new TextDecoder().decode(value)
+                        var caixa =document.getElementById('text-area-read')
                         caixa.scrollTop = caixa.scrollHeight;
-                        caixa.value += texto;
-                        if (desco){
+                        caixa.value += caractere;
+                        readCOM.texto +=caractere;
+                        if (readCOM.texto=="start\r\n"){
+                            writeCOM("M105\r\n")
+                        }
+                        if (readCOM.texto=="ok\r\n" && imprimirGCODE.status==1) {
+                            imprimirGCODE()
+                        }
+                        if (readCOM.texto.includes("\n")){
+                            readCOM.texto=""
+                        }
+                        if (desconectCOM.valor){
                             break
                         }
                         if (done) {
@@ -81,18 +89,22 @@
         }
 
         async function writeCOM(value){
+            console.log(value)
             const encoder = new TextEncoder();
-            const writer = port.writable.getWriter();
-            const texto = value.toUpperCase() + '\n'; 
+            const writer = SelectCOM.port.writable.getWriter();
+            const texto = value.toUpperCase(); 
             await writer.write(encoder.encode(texto));
             writer.releaseLock();
+            var caixa =document.getElementById('text-area-write')
+            caixa.scrollTop = caixa.scrollHeight;
+            caixa.value += texto;
         }
 
         async function desconectCOM(){
             var texto = document.getElementById("text-status")
             try{
-                await port.close()
-                desco=0
+                await SelectCOM.port.close()
+                desconectCOM.valor=0
                 texto.innerHTML = "Status: Desconectado"
             }catch{
                 texto.innerHTML = "Status: "+erro 

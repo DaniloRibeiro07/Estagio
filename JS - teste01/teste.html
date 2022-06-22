@@ -9,28 +9,54 @@
     <link rel='stylesheet' href='.\CSS\style.css'>
     <script src='.\JS\serial.js'></script>
     <script src='.\JS\interacao.js'></script>
+    <script src='.\JS\video.js'></script>
+    <script src='.\JS\gcode.js'></script>
 </head>
 <body>
-    <p>Clique no botão abaixo para selecionar uma porta serial:</p>
-    <input type="button" name="Porta Selecionada" value="Selecionar Porta Serial" onclick="SelectCOM()"/>
-    <p id="text-disp-select">Dispositivo selecionado:</p>
-    
-    <p>Clique no botão abaixo para conectar com o dispositivo.</p>
-    <input type="button" name="conectar" value="Conectar" onclick="ConectCOM()"/>
-    <p id="text-status">Status: Desconectado</p>
-    
-    <textarea readonly id="text-area"></textarea>
-    <br>  
-    <input id="text-box"/>
-    <input type="button" name="enviar" value="Enviar" onclick="writeCOM(document.getElementById('text-box').value)"/>
-    <br><br>
-    <p>Clique no botão abaixo para se desconectar do dispositivo.</p>
-    <input type="button" id="desco" name="Desconectar" value="Desconectar" onclick="desco=1"/>
-    <footer>
-        <a id ="texto-rodape">Power By:</a> 
-        <a href="https://www.instagram.com/inovector3d/" target="_blank" rel="noopener noreferrer">
-            <img id="logo-inovector" src="./data/InovectorLogo1.png" height="90%" >
-        </a>
-    </footer>
+    <div id="serial">
+        <p>Clique no botão abaixo para selecionar uma porta serial:</p>
+        <input type="button" name="Porta Selecionada" value="Selecionar Porta Serial" onclick="SelectCOM()"/>
+        <p id="text-disp-select">Dispositivo selecionado:</p>
+        
+        <p>Clique no botão abaixo para conectar com o dispositivo.</p>
+        <input type="button" id="Conectar" name="Conectar" value="Conectar" onclick="ConectCOM()"/>
+        <p id="text-status">Status: Desconectado</p>
+        
+        <textarea readonly class="text-area" id="text-area-read"></textarea>
+        <textarea readonly class="text-area" id="text-area-write"></textarea>
+        <br>  
+        <input id="text-box-write"/>
+        <input type="button" id="button-text-box-write" name="Enviar" value="Enviar" onclick="writeCOM(document.getElementById('text-box-write').value+'\r\n')"/>
+        <br><br>
+        <p>Clique no botão abaixo para se desconectar do dispositivo.</p>
+        <input type="button" id="desco" name="Desconectar" value="Desconectar" onclick="desconectCOM.valor=1"/>
+    <br>
+
+    <div id="GCODE">
+        <br><br>
+        <p>--------------GCODE--------------</p>
+        <p>Clique no botão abaixo para escolher o arquivo .GCODE</p> 
+        <input type="file" accept=".gcode" value="Escolher Arquivo" id="Escolher-Arquivo" onchange="escolherarquivoGCODE()"/>
+        <p>Clique no botão abaixo para imprimir</p>
+        <input type="button" value="Imprimir/Continuar" onclick="imprimirGCODE.status=1" />
+        <p>Clique no botão abaixo para pausar a impressao</p>
+        <input type="button" value="Pausar" onclick="imprimirGCODE.status=0" />
+    </div>
+
+    <div id="video">
+        <br><br>
+        <p>--------------WEBCAM--------------</p>
+        <p>Clique no botão abaixo para autorizar o acesso a WebCam</p>
+        <input type="button" value="Autorizar WebCam" onclick="AutorizarVideo()"/>
+        <p id="Status-video">Status: Desligado!</p>
+        <p>Clique no botão abaixo para acessar o vídeo da WebCam</p>
+        <input type="button" value="Ligar WebCam" onclick="LigarVideo()"/>
+        <br><br>
+        <video autoplay="true" id="elemento-video"></video>
+        <p>Clique no botão abaixo para desligar o vídeo da WebCam</p>
+        <input type="button" value="Desligar WebCam" onclick="DesligarVideo()"/>
+    </div>
+
+    <div id="demoShowA"></div>
 </body>
 </html>
