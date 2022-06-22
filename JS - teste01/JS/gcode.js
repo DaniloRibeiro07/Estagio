@@ -14,15 +14,20 @@ function imprimirGCODE(){
     if (imprimirGCODE.contador==-1){
         texto+="M110\r\n"
     }else{
-        while (imprimirGCODE.valor[0]==";"){
+        if (imprimirGCODE.valor!=""){
+            while (imprimirGCODE.valor[0]==";"){
+                imprimirGCODE.valor=imprimirGCODE.valor.slice(imprimirGCODE.valor.indexOf("\n")+1)
+            }
+            if ((imprimirGCODE.valor.indexOf("\n")<imprimirGCODE.valor.indexOf(";"))||!imprimirGCODE.valor.includes(";")){
+                texto += imprimirGCODE.valor.substring(0,imprimirGCODE.valor.indexOf("\n")+1)
+            }else{
+                texto += imprimirGCODE.valor.substring(0,imprimirGCODE.valor.indexOf(";")-1) +"\r\n"
+            }
             imprimirGCODE.valor=imprimirGCODE.valor.slice(imprimirGCODE.valor.indexOf("\n")+1)
-        }
-        if (imprimirGCODE.valor.indexOf("\n")<imprimirGCODE.valor.indexOf(";")){
-            texto += imprimirGCODE.valor.substring(0,imprimirGCODE.valor.indexOf("\n")+1)
         }else{
-            texto += imprimirGCODE.valor.substring(0,imprimirGCODE.valor.indexOf(";")-1) +"\r\n"
+            imprimirGCODE.status==0
+            return
         }
-        imprimirGCODE.valor=imprimirGCODE.valor.slice(imprimirGCODE.valor.indexOf("\n")+1)
     }
     writeCOM(texto)
     imprimirGCODE.contador++
