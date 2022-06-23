@@ -38,7 +38,7 @@
         <p>Clique no botão abaixo para escolher o arquivo .GCODE</p> 
         <input type="file" accept=".gcode" value="Escolher Arquivo" id="Escolher-Arquivo" onchange="escolherarquivoGCODE()"/>
         <p>Clique no botão abaixo para imprimir</p>
-        <input type="button" value="Imprimir/Continuar" onclick="imprimirGCODE.status=1" />
+        <input type="button" value="Imprimir/Continuar" onclick="forcarGCODE()" />
         <p>Clique no botão abaixo para pausar a impressao</p>
         <input type="button" value="Pausar" onclick="imprimirGCODE.status=0" />
     </div>
@@ -55,6 +55,8 @@
         <video autoplay="true" id="elemento-video"></video>
         <p>Clique no botão abaixo para desligar o vídeo da WebCam</p>
         <input type="button" value="Desligar WebCam" onclick="DesligarVideo()"/>
+        <p>Clique no botão abaixo para Salvar o vídeo da timelapse da impressão</p>
+        <a id="downloadlocal" download="Time"> <input type="button" value="Salvar Video" onclick="SalvarVideo()"/></a>
     </div>
 
     <div id="demoShowA"></div>

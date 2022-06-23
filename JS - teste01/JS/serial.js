@@ -45,6 +45,7 @@
             try{
                 await SelectCOM.port.open({baudRate:(115200),bufferSize:(255),dataBits:(8),flowControl:("none"),parity:("none"),stopBits:(1)})
                 texto.innerHTML = "Status: Conectado"
+                writeCOM.escrita = SelectCOM.port.writable.getWriter();
                 readCOM();
             }catch (erro){
                 texto.innerHTML = "Status: "+erro +" selecione outra porta e tente novamente."
@@ -54,7 +55,7 @@
         async function readCOM(){
             readCOM.texto=""
             while (SelectCOM.port.readable) {
-                const reader = SelectCOM.port.readable.getReader();
+                window.reader = SelectCOM.port.readable.getReader();
                 try {
                     while (true) {
                         const { value, done } = await reader.read()
@@ -63,16 +64,17 @@
                         caixa.scrollTop = caixa.scrollHeight;
                         caixa.value += caractere;
                         readCOM.texto +=caractere;
+                        //console.log(readCOM.texto.includes("ok"))
                         if (readCOM.texto=="start\r\n"){
                             writeCOM("M105\r\n")
                         }
-                        if (readCOM.texto=="ok\r\n" && imprimirGCODE.status==1) {
+                        if (readCOM.texto.includes("ok") && imprimirGCODE.status==1) {
                             imprimirGCODE()
                         }
                         if (readCOM.texto.includes("\n")){
                             readCOM.texto=""
                         }
-                        if (desconectCOM.valor){
+                        if (desconectCOM.valor==1){
                             break
                         }
                         if (done) {
@@ -89,12 +91,10 @@
         }
 
         async function writeCOM(value){
-            console.log(value)
+            //console.log(value)
             const encoder = new TextEncoder();
-            const writer = SelectCOM.port.writable.getWriter();
             const texto = value.toUpperCase(); 
-            await writer.write(encoder.encode(texto));
-            writer.releaseLock();
+            await writeCOM.escrita.write(encoder.encode(texto));
             var caixa =document.getElementById('text-area-write')
             caixa.scrollTop = caixa.scrollHeight;
             caixa.value += texto;
@@ -106,7 +106,7 @@
                 await SelectCOM.port.close()
                 desconectCOM.valor=0
                 texto.innerHTML = "Status: Desconectado"
-            }catch{
+            }catch (erro){
                 texto.innerHTML = "Status: "+erro 
             }            
         }
