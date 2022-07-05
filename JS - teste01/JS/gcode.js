@@ -36,14 +36,16 @@ function imprimirGCODE(){
                     }
                 }
             }
+            writeCOM(texto)
+            imprimirGCODE.contador++
         }else{
-            LigarVideo.mediaRecorder.stop()
-            imprimirGCODE.status==0
+            console.log("entrei")
+            PausarGravacao.status=1
+            LigarVideo.mediaRecorder.resume()
             return
         }
-    writeCOM(texto)
-    imprimirGCODE.contador++
 }
+
 LigarVideo.status=0
 
 function forcarGCODE(){

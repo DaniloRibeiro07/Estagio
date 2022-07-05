@@ -6,59 +6,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comunicação Serial</title>
     <link rel = "icon" href =".\data\InovectorLogo2.png" type = "image/x-icon">
+    <!--Carga de recursos CSS-->
     <link rel='stylesheet' href='.\CSS\style.css'>
+    <!--Início de carga de recursos Javascript-->
     <script src='.\JS\serial.js'></script>
     <script src='.\JS\interacao.js'></script>
     <script src='.\JS\video.js'></script>
     <script src='.\JS\gcode.js'></script>
+    <!--Fim de carga de recursos Javascript-->
 </head>
 <body>
+    <!-----ÁREA DE COMUNICAÇÃO SERIAL----->
     <div id="serial">
         <p>Clique no botão abaixo para selecionar uma porta serial:</p>
-        <input type="button" name="Porta Selecionada" value="Selecionar Porta Serial" onclick="SelectCOM()"/>
-        <p id="text-disp-select">Dispositivo selecionado:</p>
+        <input type="button" name="Porta Selecionada" value="Selecionar Porta Serial" onclick="SelectCOM()"/> <!--Botão Solicitar ao usuário a porta serial-->
+        <p id="text-disp-select">Dispositivo selecionado:</p> <!--Texto com status de conexão-->
         
         <p>Clique no botão abaixo para conectar com o dispositivo.</p>
-        <input type="button" id="Conectar" name="Conectar" value="Conectar" onclick="ConectCOM()"/>
-        <p id="text-status">Status: Desconectado</p>
+        <input type="button" id="Conectar" name="Conectar" value="Conectar" onclick="ConectCOM()"/> <!--Botão de conectar-->
+        <p id="text-status">Status: Desconectado</p> <!--MENSAGEM COM O STATUS DO BOTÃO-->
         
-        <textarea readonly class="text-area" id="text-area-read"></textarea>
-        <textarea readonly class="text-area" id="text-area-write"></textarea>
+        <textarea readonly class="text-area" id="text-area-read"></textarea> <!--ÁREA DE TEXTO DE RECEBIMENTO DE MENSAGEM-->>
+        <textarea readonly class="text-area" id="text-area-write"></textarea> <!--ÁREA DE TEXTO DE ENVIO DE MENSAGEM-->>
         <br>  
-        <input id="text-box-write"/>
-        <input type="button" id="button-text-box-write" name="Enviar" value="Enviar" onclick="writeCOM(document.getElementById('text-box-write').value+'\r\n')"/>
+        <input id="text-box-write"/> <!--Caixa de texto de escrita serial-->
+        <input type="button" id="button-text-box-write" name="Enviar" value="Enviar" onclick="writeCOM(document.getElementById('text-box-write').value+'\r\n')"/> <!--Botão Envio de informação serial-->
         <br><br>
         <p>Clique no botão abaixo para se desconectar do dispositivo.</p>
-        <input type="button" id="desco" name="Desconectar" value="Desconectar" onclick="desconectCOM.valor=1"/>
+        <input type="button" id="desco" name="Desconectar" value="Desconectar" onclick="desconectCOM.valor=1"/> <!--Botão Desconexão-->
     <br>
+    <!-----FIM ÁREA DE COMUNICAÇÃO SERIAL----->
 
+    <!-----ÁREA DE GCODE----->
     <div id="GCODE">
         <br><br>
         <p>--------------GCODE--------------</p>
         <p>Clique no botão abaixo para escolher o arquivo .GCODE</p> 
-        <input type="file" accept=".gcode" value="Escolher Arquivo" id="Escolher-Arquivo" onchange="escolherarquivoGCODE()"/>
+        <input type="file" accept=".gcode" value="Escolher Arquivo" id="Escolher-Arquivo" onchange="escolherarquivoGCODE()"/> <!--Botão escolher arquivo-->
         <p>Clique no botão abaixo para imprimir</p>
-        <input type="button" value="Imprimir/Continuar" onclick="forcarGCODE()" />
+        <input type="button" value="Imprimir/Continuar" onclick="forcarGCODE()" /> <!--Botão iniciar impressão-->
         <p>Clique no botão abaixo para pausar a impressao</p>
-        <input type="button" value="Pausar" onclick="imprimirGCODE.status=0" />
+        <input type="button" value="Pausar" onclick="imprimirGCODE.status=0" /> <!--Botão pausar impressão-->
     </div>
+    <!-----FIM ÁREA DE GCODE----->
 
+    <!-----INÍCIO ÁREA DE VÍDEO----->
     <div id="video">
         <br><br>
         <p>--------------WEBCAM--------------</p>
         <p>Clique no botão abaixo para autorizar o acesso a WebCam</p>
-        <input type="button" value="Autorizar WebCam" onclick="AutorizarVideo()"/>
-        <p id="Status-video">Status: Desligado!</p>
+        <input type="button" value="Autorizar WebCam" onclick="AutorizarVideo()"/><!--Botão Solicita autorização da câmera-->
+        <p id="Status-video">Status: Desligado!</p> <!--Texto informado o status da conexão com a câmera-->
         <p>Clique no botão abaixo para acessar o vídeo da WebCam</p>
-        <input type="button" value="Ligar WebCam" onclick="LigarVideo()"/>
+        <input type="button" value="Ligar WebCam" onclick="LigarVideo()"/> <!--Botão Ligar câmera-->
         <br><br>
-        <video autoplay="true" id="elemento-video"></video>
+        <video autoplay="true" id="elemento-video"></video> <!--Área de vídeo na página-->
         <p>Clique no botão abaixo para desligar o vídeo da WebCam</p>
-        <input type="button" value="Desligar WebCam" onclick="DesligarVideo()"/>
+        <input type="button" value="Desligar WebCam" onclick="DesligarVideo()"/> <!--Botão de desligar vídeo-->
         <p>Clique no botão abaixo para Salvar o vídeo da timelapse da impressão</p>
-        <a id="downloadlocal" download="Time"> <input type="button" value="Salvar Video" onclick="SalvarVideo()"/></a>
+        <a id="downloadlocal" download="Time"> <input type="button" value="Salvar Video" onclick="SalvarVideo()"/></a> <!--Botão de salvar o vídeo-->
     </div>
-
-    <div id="demoShowA"></div>
+    <!-----FIM ÁREA DE VÍDEO----->
 </body>
 </html>

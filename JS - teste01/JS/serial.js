@@ -60,9 +60,9 @@
                     while (true) {
                         const { value, done } = await reader.read()
                         var caractere=new TextDecoder().decode(value)
-                        var caixa =document.getElementById('text-area-read')
-                        caixa.scrollTop = caixa.scrollHeight;
-                        caixa.value += caractere;
+                        //var caixa =document.getElementById('text-area-read')
+                        //caixa.scrollTop = caixa.scrollHeight;
+                        //caixa.value += caractere;
                         readCOM.texto +=caractere;
                         //console.log(readCOM.texto.includes("ok"))
                         if (readCOM.texto=="start\r\n"){
@@ -95,9 +95,9 @@
             const encoder = new TextEncoder();
             const texto = value.toUpperCase(); 
             await writeCOM.escrita.write(encoder.encode(texto));
-            var caixa =document.getElementById('text-area-write')
-            caixa.scrollTop = caixa.scrollHeight;
-            caixa.value += texto;
+            //var caixa =document.getElementById('text-area-write')
+            //caixa.scrollTop = caixa.scrollHeight;
+            //caixa.value += texto;
         }
 
         async function desconectCOM(){
