@@ -61,7 +61,7 @@ function DesligarVideo() {
 
 //ínicio de rotina gravação de take
 async function Gravar(){ 
-  await esperar(200) //executa a função esperar de forma assíncrona
+  await esperar(parseInt(document.getElementById("take-duracao").value)) //executa a função esperar de forma assíncrona
 }
 function esperar(x) {
   return new Promise(resolve => { //cria um objeto de processamento assícrono, 

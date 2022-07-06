@@ -59,6 +59,7 @@
         <p id="Status-video">Status: Desligado!</p> <!--Texto informado o status da conexão com a câmera-->
         <p>Clique no botão abaixo para acessar o vídeo da WebCam</p>
         <input type="button" value="Ligar WebCam" onclick="LigarVideo()"/> <!--Botão Ligar câmera-->
+        <input type="number" id="take-duracao" min="10" max="10000" value="200" step="100"> ms <!--Botão atualizar duração de cada take-->
         <br><br>
         <video autoplay="true" id="elemento-video"></video> <!--Área de vídeo na página-->
         <p>Clique no botão abaixo para desligar o vídeo da WebCam</p>
