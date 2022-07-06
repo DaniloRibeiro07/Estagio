@@ -13,6 +13,7 @@
     <script src='.\JS\interacao.js'></script>
     <script src='.\JS\video.js'></script>
     <script src='.\JS\gcode.js'></script>
+    <script src='.\JS\rede.js'></script>
     <!--Fim de carga de recursos Javascript-->
 </head>
 <body>
@@ -34,8 +35,17 @@
         <br><br>
         <p>Clique no botão abaixo para se desconectar do dispositivo.</p>
         <input type="button" id="desco" name="Desconectar" value="Desconectar" onclick="desconectCOM.valor=1"/> <!--Botão Desconexão-->
-    <br>
+    <br></div>
     <!-----FIM ÁREA DE COMUNICAÇÃO SERIAL----->
+
+    <!-----ÁREA DE CONEXÃO VIA REDE----->
+    <div id="rede">
+        <p>Clique no botão abaixo para sincronizar com uma impressora da rede</p>             
+        <input type="button" id="RedeConnectar" name="ConnectRede" value="ConnectRede" onclick="conectarRede()"/> <!--Botão Conexão-->
+    </div>
+
+    <!-----FIM ÁREA DE CONEXÃO VIA REDE----->
+
 
     <!-----ÁREA DE GCODE----->
     <div id="GCODE">
