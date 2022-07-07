@@ -13,15 +13,26 @@
     <script src='.\JS\interacao.js'></script>
     <script src='.\JS\video.js'></script>
     <script src='.\JS\gcode.js'></script>
+    <script src='.\JS\rede.js'></script>
     <!--Fim de carga de recursos Javascript-->
 </head>
 <body>
-    <!-----ÁREA DE COMUNICAÇÃO SERIAL----->
-    <div id="serial">
-        <p>Clique no botão abaixo para selecionar uma porta serial:</p>
-        <input type="button" name="Porta Selecionada" value="Selecionar Porta Serial" onclick="SelectCOM()"/> <!--Botão Solicitar ao usuário a porta serial-->
-        <p id="text-disp-select">Dispositivo selecionado:</p> <!--Texto com status de conexão-->
-        
+    <!-----ÁREA DE Seleção de tipo de conexão Serial ou Rede----->
+    <div>
+        <p>Selecione o tipo de conexão</p>
+        <input type="button" value="COM" id="COM" disabled onclick="SerialOn()">
+        <input type="button" value="REDE" id="REDE" onclick="RedeOn()">
+    </div>
+    <!-----FIM ÁREA DE Seleção de tipo de conexão Serial ou Rede----->
+
+    <!-----ÁREA DE COMUNICAÇÃO----->
+    <div id="comunicacao">
+        <div id="serial/rede">
+            <p>Clique no botão abaixo para selecionar uma porta serial:</p>
+            <input type="button" name="Porta Selecionada" value="Selecionar Porta Serial" onclick="SelectCOM()"/> <!--Botão Solicitar ao usuário a porta serial-->
+            <p id="text-disp-select">Dispositivo selecionado:</p> <!--Texto com o nome do dispositivo-->
+            <p>Nome na rede: <input type="text" id="nome-rede"></p>
+        </div>
         <p>Clique no botão abaixo para conectar com o dispositivo.</p>
         <input type="button" id="Conectar" name="Conectar" value="Conectar" onclick="ConectCOM()"/> <!--Botão de conectar-->
         <p id="text-status">Status: Desconectado</p> <!--MENSAGEM COM O STATUS DO BOTÃO-->
@@ -34,8 +45,8 @@
         <br><br>
         <p>Clique no botão abaixo para se desconectar do dispositivo.</p>
         <input type="button" id="desco" name="Desconectar" value="Desconectar" onclick="desconectCOM.valor=1"/> <!--Botão Desconexão-->
-    <br>
-    <!-----FIM ÁREA DE COMUNICAÇÃO SERIAL----->
+    <br></div>
+    <!-----FIM ÁREA DE COMUNICAÇÃO----->
 
     <!-----ÁREA DE GCODE----->
     <div id="GCODE">

@@ -46,67 +46,81 @@
 
         //inicio rotina de conexão serial
         async function ConectCOM(){
-            var texto = document.getElementById("text-status")
-            try{ //tenta conectar com a impressora com as configurações programadas
-                await SelectCOM.port.open({baudRate:(115200),bufferSize:(255),dataBits:(8),flowControl:("none"),parity:("none"),stopBits:(1)})
-                texto.innerHTML = "Status: Conectado"
-                writeCOM.escrita = SelectCOM.port.writable.getWriter(); //cria um fluxo de escrita
-                readCOM(); //chama a função de leitura da porta serial
-            }catch (erro){
-                texto.innerHTML = "Status: "+erro +" selecione outra porta e tente novamente."
+            if (document.getElementById("REDE").hasAttribute("disabled")){
+                var texto = document.getElementById("text-status") 
+                try{ //tenta conectar com a impressora com as configurações programadas
+                    await SelectCOM.port.open({baudRate:(115200),bufferSize:(255),dataBits:(8),flowControl:("none"),parity:("none"),stopBits:(1)})
+                    texto.innerHTML = "Status: Conectado"
+                    document.getElementById("nome-rede").setAttribute("disabled","disabled")
+                    servidorControle("cadastro")
+                    writeCOM.escrita = SelectCOM.port.writable.getWriter(); //cria um fluxo de escrita
+                    readCOM(); //chama a função de leitura da porta serial
+                }catch (erro){
+                    texto.innerHTML = "Status: "+erro +" selecione outra porta e tente novamente."
+                }
+            }else{
+                readCOM()
             }
         }
+
         //fim rotina de conexão serial
 
         //inicio rotina de leitura serial
         async function readCOM(){
-            readCOM.texto="" //variável de texto lido
-            while (SelectCOM.port.readable) { //enquanto a leitura estiver disponível
-                window.reader = SelectCOM.port.readable.getReader(); //variável com o fluxo de leitura
-                try { //tente 
-                    while (true) {
-                        const { value, done } = await reader.read()
-                        var caractere=new TextDecoder().decode(value)
-                        //var caixa =document.getElementById('text-area-read')
-                        //caixa.scrollTop = caixa.scrollHeight;
-                        //caixa.value += caractere;
-                        readCOM.texto +=caractere;
-                        //console.log(readCOM.texto.includes("ok"))
-                        if (readCOM.texto=="start\r\n"){ //"se for lido start", screva M105
-                            writeCOM("M105\r\n")
+            if (document.getElementById("REDE").hasAttribute("disabled")){
+                readCOM.texto="" //variável de texto lido
+                while (SelectCOM.port.readable) { //enquanto a leitura estiver disponível
+                    window.reader = SelectCOM.port.readable.getReader(); //variável com o fluxo de leitura
+                    try { //tente 
+                        while (true) {
+                            const { value, done } = await reader.read()
+                            var caractere=new TextDecoder().decode(value)
+                            var caixa =document.getElementById('text-area-read')
+                            caixa.scrollTop = caixa.scrollHeight;
+                            caixa.value += caractere;
+                            readCOM.texto +=caractere;
+                            console.log(readCOM.texto.includes("ok"))
+                            if (readCOM.texto=="start\r\n"){ //"se for lido start", screva M105
+                                writeCOM("M105\r\n")
+                            }
+                            if (readCOM.texto.includes("ok") && imprimirGCODE.status==1) { //se for lido "ok e a impressão esteja acontecendo"
+                                imprimirGCODE()
+                            }
+                            if (readCOM.texto.includes("\n")){ //se houver quebra no texto, atualizar texto para vazio
+                                readCOM.texto=""
+                            }
+                            if (desconectCOM.valor==1){ //se desconexão for igual a 1, desconexte
+                                break
+                            }
+                            if (done) {
+                                break;
+                            }
                         }
-                        if (readCOM.texto.includes("ok") && imprimirGCODE.status==1) { //se for lido "ok e a impressão esteja acontecendo"
-                            imprimirGCODE()
-                        }
-                        if (readCOM.texto.includes("\n")){ //se houver quebra no texto, atualizar texto para vazio
-                            readCOM.texto=""
-                        }
-                        if (desconectCOM.valor==1){ //se desconexão for igual a 1, desconexte
-                            break
-                        }
-                        if (done) {
-                            break;
-                        }
+                    } catch (error) {
+                    } finally {
+                        reader.releaseLock(); //remover fluxo de faixa serial de leitura
+                        break
                     }
-                } catch (error) {
-                } finally {
-                    reader.releaseLock(); //remover fluxo de faixa serial de leitura
-                    break
                 }
+                desconectCOM()
+            } else{
+                var caixa =document.getElementById('text-area-read')
+                caixa.scrollTop = caixa.scrollHeight;
+                caixa.value=servidorControle("leitura")
             }
-            desconectCOM()
+            
         }
         //fim rotina de leitura serial
 
         //inicio rotina de escrita serial
         async function writeCOM(value){
-            //console.log(value)
+            console.log(value)
             const encoder = new TextEncoder(); //cria um objeto de codificador
             const texto = value.toUpperCase(); //deixa em maiuculo o texto a ser enviado
             await writeCOM.escrita.write(encoder.encode(texto)); //envia texto codificado
-            //var caixa =document.getElementById('text-area-write')
-            //caixa.scrollTop = caixa.scrollHeight;
-            //caixa.value += texto;
+            var caixa =document.getElementById('text-area-write')
+            caixa.scrollTop = caixa.scrollHeight;
+            caixa.value += texto;
         }
         //fim rotina de escrita serial
 
@@ -117,6 +131,7 @@
                 await SelectCOM.port.close()
                 desconectCOM.valor=0
                 texto.innerHTML = "Status: Desconectado"
+                document.getElementById("nome-rede").removeAttribute("disabled")
             }catch (erro){
                 texto.innerHTML = "Status: "+erro 
             }            
